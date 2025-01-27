@@ -10,7 +10,15 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
-    if (developerInfo.length === 0) return;
+    if (developerInfo.length === 0) {
+      if (canvasRef.current) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      return;
+    }
 
     const loadImages = async () => {
       const images = await Promise.all(
@@ -30,7 +38,7 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
         if (!ctx) return;
 
         const imgSize = 70;
-        const padding = 20;
+        const padding = 15;
         const maxPerRow = 10;
 
         const canvasWidth = maxPerRow * (imgSize + padding) + padding;
@@ -81,16 +89,9 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
   };
 
   return (
-    <div className="h-[50vh] min-w-2/5 bg-transparent rounded-3xl flex flex-col items-center justify-between p-4 border border-slate-300 border-dashed">
+    <div className="h-[50vh] min-w-2/5 bg-transparent rounded-xl flex flex-col items-center justify-between p-4 border border-slate-300 border-dashed">
       <canvas ref={canvasRef} className="w-full h-auto bg-transparent" />
-      {imagesLoaded && (
-        <button
-          onClick={handleExport}
-          className="mt-12 duration-300 h-12 px-6 rounded-xl bg-gradient-to-r from-slate-300 to-purple-300 hover:bg-gradient-to-r hover:from-slate-500 hover:to-purple-500 transition-colors active:translate-y-1 active:scale-95 focus:ring-2 focus:ring-offset-2 font-bold text-xl active:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:text-white"
-        >
-          Export Image
-        </button>
-      )}
+      {imagesLoaded && <button onClick={handleExport}>Export Image</button>}
     </div>
   );
 }

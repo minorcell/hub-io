@@ -10,17 +10,17 @@ export interface DeveloperInfo {
   avatar_url: string;
   contributions: number;
   login: string;
-  url: string;
+  html_url: string;
 }
 
 function App() {
   const [developerInfo, setDeveloperInfo] = useState<DeveloperInfo[]>([]);
 
   return (
-    <div className="w-screen min-h-screen flex flex-col justify-between items-center bg-gradient-to-r from-slate-900 to-purple-900">
+    <div className="w-screen min-h-screen flex flex-col justify-between items-center bg-gray-900">
       <AppInfo />
       <IOInput setDeveloperInfo={setDeveloperInfo} />
-      <div className="w-full min-h-[40vh] py-12 flex items-center justify-center gap-12">
+      <div className="w-full min-h-[40vh] py-12 flex items-center justify-center gap-4">
         <CanvasImg developerInfo={developerInfo} />
         <JSONBlock developerInfo={developerInfo} />
       </div>

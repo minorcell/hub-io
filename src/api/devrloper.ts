@@ -5,5 +5,6 @@ export const getContributors = async (repoName: string) => {
         throw new Error(`GitHub API request failed: ${response.status}`);
     }
     const data = await response.json();
+    if (data.status === 404) return [];
     return data;
 }
