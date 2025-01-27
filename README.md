@@ -1,6 +1,10 @@
 # hub-io 🌟
 
-<p align="center"> <img src="./public/io-logo.png" alt="Hub-IO Logo" width="200" /> <div align="center">Hub-IO</div> </p>
+<p align="center"> <img src="./public/io-logo.png" alt="Hub-IO Logo" width="200" /> <div align="center">Hub-Io: Easy access to github repository information</div> </p>
+
+## Deployment 🖥️
+
+Deployed on [Hub-IO](https://hub-io-kappa.vercel.app/)
 
 ## Introduction 🚀
 
