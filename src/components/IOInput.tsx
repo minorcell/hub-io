@@ -1,11 +1,40 @@
 import { useState } from "react";
 
-function IOInput() {
+import { getContributors } from "../api/devrloper";
+import { DeveloperInfo } from "../App";
+
+export interface IOInputProps {
+  setDeveloperInfo: (developerInfo: any) => void;
+}
+
+function IOInput({ setDeveloperInfo }: IOInputProps) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
 
-  function handleClick(): void {
-    setInputValue("");
+  function handleRes(res: Record<string, any>[]): DeveloperInfo[] {
+    const result = res.map((item) => {
+      return {
+        avatar_url: item.avatar_url,
+        contributions: item.contributions,
+        login: item.login,
+        url: item.url,
+      };
+    });
+    console.log(result);
+    return result;
+  }
+
+  function handleSearch(): void {
+    if (inputValue) {
+      getContributors(inputValue)
+        .then((res) => {
+          setDeveloperInfo(handleRes(res));
+          setInputValue("");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   return (
@@ -34,9 +63,9 @@ function IOInput() {
       </div>
       {/* SearchButton */}
       <button
-        onClick={handleClick}
+        onClick={handleSearch}
         disabled={!inputValue}
-        className="duration-300 h-12 px-6 rounded-xl bg-gradient-to-r from-slate-300 to-purple-300 hover:bg-gradient-to-r hover:from-slate-500 hover:to-purple-500 transition-colors active:translate-y-1 active:scale-95 focus:ring-2 focus:ring-offset-2 font-bold text-xl active:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        className="duration-300 h-12 px-6 rounded-xl bg-gradient-to-r from-slate-300 to-purple-300 hover:bg-gradient-to-r hover:from-slate-500 hover:to-purple-500 transition-colors active:translate-y-1 active:scale-95 focus:ring-2 focus:ring-offset-2 font-bold text-xl active:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:text-white"
       >
         Search
       </button>
