@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+html {
+    overflow: -moz-hidden-unscrollable;
+    /* Firefox */
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    overflow: auto;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+body::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
