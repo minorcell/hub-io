@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { DeveloperInfo } from "../App";
+import type { DeveloperInfo } from "../App";
 import { toast } from "react-toastify";
+import { Download } from "lucide-react";
 
 export interface CanvasImgProps {
   developerInfo: DeveloperInfo[];
@@ -18,6 +19,7 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
         if (!ctx) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
+      setImagesLoaded(false);
       return;
     }
 
@@ -40,7 +42,7 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
 
         const imgSize = 70;
         const padding = 15;
-        const maxCanvasWidth = 800;
+        const maxCanvasWidth = Math.min(800, window.innerWidth - 40);
 
         const maxPerRow = Math.floor(maxCanvasWidth / (imgSize + padding));
         const canvasWidth = Math.min(
@@ -66,17 +68,12 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
 
           ctx.save();
           ctx.beginPath();
-          ctx.arc(
-            x * 2 + imgSize,
-            y * 2 + imgSize,
-            imgSize,
-            0,
-            Math.PI * 2
-          );
+          ctx.arc(x * 2 + imgSize, y * 2 + imgSize, imgSize, 0, Math.PI * 2);
           ctx.closePath();
           ctx.clip();
 
           ctx.drawImage(img, x * 2, y * 2, imgSize * 2, imgSize * 2);
+
           ctx.restore();
         });
 
@@ -90,23 +87,42 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
   const handleExport = () => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
-      const dataUrl = canvas.toDataURL("image/webp");
+      const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = dataUrl;
-      link.download = "contributors.webp";
+      link.download = "contributors.png";
       link.click();
       toast.success("Image exported successfully!");
     }
   };
 
   return (
-    <div className="h-[50vh] min-w-2/5 bg-transparent rounded-xl flex flex-col items-center justify-between p-4 border border-slate-300 border-dashed">
-      <canvas ref={canvasRef} className="w-full h-auto bg-transparent" />
-      {imagesLoaded && (
-        <button onClick={handleExport} className="io-button">
-          Export Image
-        </button>
-      )}
+    <div className="w-full max-w-4xl mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
+      <div className="p-4 bg-gray-900 border-b border-gray-700 flex justify-between items-center">
+        <h2 className="text-lg font-semibold text-white">Contributors Image</h2>
+        {imagesLoaded && (
+          <button
+            onClick={handleExport}
+            className="flex items-center px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+          >
+            <Download size={16} className="mr-2" />
+            Export Image
+          </button>
+        )}
+      </div>
+      <div
+        className="flex justify-center items-center bg-transparent"
+        style={{ minHeight: "300px" }}
+      >
+        {developerInfo.length > 0 ? (
+          <canvas
+            ref={canvasRef}
+            className="max-w-full h-auto bg-transparent rounded"
+          />
+        ) : (
+          <p className="text-gray-400 text-center">No data available</p>
+        )}
+      </div>
     </div>
   );
 }

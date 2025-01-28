@@ -19,10 +19,10 @@ function App() {
 
   return (
     <>
-      <div className="select-none w-screen min-h-screen flex flex-col justify-between items-center bg-gray-900">
+      <div className="font-IoNormal select-none w-screen min-h-screen flex flex-col justify-between items-center bg-slate-900">
         <AppInfo />
         <IOInput setDeveloperInfo={setDeveloperInfo} />
-        <div className="w-full min-h-[40vh] py-12 flex items-center justify-center gap-4">
+        <div className="w-full md:w-4/5 flex flex-col items-center justify-center gap-8 mb-12 md:px-0 px-4">
           <CanvasImg developerInfo={developerInfo} />
           <JSONBlock developerInfo={developerInfo} />
         </div>

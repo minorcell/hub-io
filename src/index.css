@@ -21,36 +21,23 @@ body {
     /* Chrome, Safari, Opera */
 }
 
-.io-button {
-    height: 3rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    border-radius: 0.75rem;
-    background-image: linear-gradient(to right, #cbd5e1, #d8b4fe);
-    font-weight: 700;
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    transition-duration: all 0.7s ease-in-out;
-    cursor: pointer;
+@font-face {
+    font-family: 'SixtyfourConvergence';
+    src: url('./assets/fonts/SixtyfourConvergence-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
-.io-button:hover {
-    background-image: linear-gradient(to right, #64748b, #9333ea);
-    color: white;
+@font-face {
+    font-family: 'IoNormal';
+    src: url('./assets/fonts/IoNormal.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
-.io-button:active {
-    transform: translateY(1px) scale(0.95);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.io-button:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
-
-.io-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+@theme {
+    --font-SixtyfourConvergence: "SixtyfourConvergence";
+    --font-IoNormal: "IoNormal";
 }
