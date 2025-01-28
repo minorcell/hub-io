@@ -9,7 +9,7 @@ export interface IOInputProps {
 }
 
 function normalizeInputValue(value: string): string {
-  return value.replace("https://github.com/", "");
+  return value.replace("https://github.com/", "").trim();
 }
 
 function mapContributorsToDeveloperInfo(
@@ -64,6 +64,11 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
           type="text"
           className="w-full h-14 pl-4 pr-20 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
         />

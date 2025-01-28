@@ -30,7 +30,7 @@ function JSONBlock({ developerInfo }: JSONBlockProps) {
         )}
       </div>
       <div
-        className="p-4 overflow-auto"
+        className="p-4 overflow-auto min-h-[30vh]"
         style={{ maxHeight: "calc(50vh - 60px)" }}
       >
         {developerInfo.length > 0 ? (
@@ -38,7 +38,9 @@ function JSONBlock({ developerInfo }: JSONBlockProps) {
             <code className="language-json">{jsonString}</code>
           </pre>
         ) : (
-          <p className="text-gray-400 text-center">No data available</p>
+          <p className="text-gray-400 h-[30vh] flex items-center justify-center">
+            No data available
+          </p>
         )}
       </div>
     </div>
