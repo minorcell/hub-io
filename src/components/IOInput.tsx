@@ -3,36 +3,55 @@ import { useState } from "react";
 import { getContributors } from "../api/devrloper";
 import { DeveloperInfo } from "../App";
 
+import { toast } from "react-toastify";
+
 export interface IOInputProps {
-  setDeveloperInfo: (developerInfo: any) => void;
+  setDeveloperInfo: (developerInfo: DeveloperInfo[]) => void;
+}
+
+function normalizeInputValue(value: string): string {
+  return value.replace("https://github.com/", "");
+}
+
+function mapContributorsToDeveloperInfo(
+  contributors: Record<string, any>[]
+): DeveloperInfo[] {
+  return contributors.map((item) => ({
+    avatar_url: item.avatar_url,
+    contributions: item.contributions,
+    login: item.login,
+    html_url: item.html_url,
+  }));
 }
 
 function IOInput({ setDeveloperInfo }: IOInputProps) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function handleRes(res: Record<string, any>[]): DeveloperInfo[] {
-    const result = res.map((item) => {
-      return {
-        avatar_url: item.avatar_url,
-        contributions: item.contributions,
-        login: item.login,
-        html_url: item.html_url,
-      };
-    });
-    return result;
+    return mapContributorsToDeveloperInfo(res);
   }
 
   function handleSearch(): void {
     setDeveloperInfo([]);
     if (inputValue) {
-      getContributors(inputValue)
+      setIsLoading(true);
+      const normalizedValue = normalizeInputValue(inputValue);
+      getContributors(normalizedValue)
         .then((res) => {
           setDeveloperInfo(handleRes(res));
+          toast.success(`Success! Found ${res.length} contributors.`);
         })
         .catch((error) => {
-          console.log(error);
+          toast.error(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setInputValue("");
         });
+    } else {
+      toast.error("Please enter a valid repository URL.");
     }
   }
 
@@ -59,7 +78,11 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
         </div>
       </div>
       {/* SearchButton */}
-      <button onClick={handleSearch} disabled={!inputValue}>
+      <button
+        onClick={handleSearch}
+        disabled={!inputValue || isLoading}
+        className="io-button"
+      >
         Query
       </button>
     </div>

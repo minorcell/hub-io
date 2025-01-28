@@ -1,10 +1,12 @@
+import { toast } from "react-toastify";
+
 export const getContributors = async (repoName: string) => {
     const response = await fetch(`https://api.github.com/repos/${repoName}/contributors`);
 
     if (!response.ok) {
-        throw new Error(`GitHub API request failed: ${response.status}`);
+        toast.error("Repository not found, please input right url.");
+        return [];
     }
     const data = await response.json();
-    if (data.status === 404) return [];
     return data;
 }

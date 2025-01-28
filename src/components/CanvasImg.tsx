@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { DeveloperInfo } from "../App";
+import { toast } from "react-toastify";
 
 export interface CanvasImgProps {
   developerInfo: DeveloperInfo[];
@@ -39,9 +40,13 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
 
         const imgSize = 70;
         const padding = 15;
-        const maxPerRow = 10;
+        const maxCanvasWidth = 800;
 
-        const canvasWidth = maxPerRow * (imgSize + padding) + padding;
+        const maxPerRow = Math.floor(maxCanvasWidth / (imgSize + padding));
+        const canvasWidth = Math.min(
+          maxCanvasWidth,
+          maxPerRow * (imgSize + padding) + padding
+        );
         const canvasHeight =
           Math.ceil(images.length / maxPerRow) * (imgSize + padding) + padding;
 
@@ -61,12 +66,17 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
 
           ctx.save();
           ctx.beginPath();
-          ctx.arc(x * 2 + imgSize, y * 2 + imgSize, imgSize, 0, Math.PI * 2);
+          ctx.arc(
+            x * 2 + imgSize,
+            y * 2 + imgSize,
+            imgSize,
+            0,
+            Math.PI * 2
+          );
           ctx.closePath();
           ctx.clip();
 
           ctx.drawImage(img, x * 2, y * 2, imgSize * 2, imgSize * 2);
-
           ctx.restore();
         });
 
@@ -85,13 +95,18 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
       link.href = dataUrl;
       link.download = "contributors.webp";
       link.click();
+      toast.success("Image exported successfully!");
     }
   };
 
   return (
     <div className="h-[50vh] min-w-2/5 bg-transparent rounded-xl flex flex-col items-center justify-between p-4 border border-slate-300 border-dashed">
       <canvas ref={canvasRef} className="w-full h-auto bg-transparent" />
-      {imagesLoaded && <button onClick={handleExport}>Export Image</button>}
+      {imagesLoaded && (
+        <button onClick={handleExport} className="io-button">
+          Export Image
+        </button>
+      )}
     </div>
   );
 }

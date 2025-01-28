@@ -1,5 +1,7 @@
 import { DeveloperInfo } from "../App";
 
+import { toast } from "react-toastify";
+
 export interface JSONBlockProps {
   developerInfo: DeveloperInfo[];
 }
@@ -9,7 +11,7 @@ function JSONBlock({ developerInfo }: JSONBlockProps) {
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(jsonString);
-    alert("JSON copied to clipboard!");
+    toast.success("JSON copied to clipboard");
   };
 
   return (
@@ -17,12 +19,12 @@ function JSONBlock({ developerInfo }: JSONBlockProps) {
       <div className="flex-1 overflow-auto p-1 rounded-lg">
         <h2 className="text-lg font-bold mb-2">JSON Data:</h2>
         <pre className="text-sm">
-          <code>{jsonString}</code>
+          <code className="language-json select-text">{jsonString}</code>
         </pre>
       </div>
 
       {developerInfo.length > 0 && (
-        <button type="button" onClick={handleCopy}>
+        <button type="button" onClick={handleCopy} className="io-button">
           Copy JSON
         </button>
       )}

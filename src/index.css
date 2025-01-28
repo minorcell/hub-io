@@ -21,7 +21,7 @@ body {
     /* Chrome, Safari, Opera */
 }
 
-button {
+.io-button {
     height: 3rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -34,23 +34,23 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.io-button:hover {
     background-image: linear-gradient(to right, #64748b, #9333ea);
     color: white;
 }
 
-button:active {
+.io-button:active {
     transform: translateY(1px) scale(0.95);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-button:focus {
+.io-button:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
-button:disabled {
+.io-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
