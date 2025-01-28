@@ -40,8 +40,10 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
       const normalizedValue = normalizeInputValue(inputValue);
       getContributors(normalizedValue)
         .then((res) => {
-          setDeveloperInfo(handleRes(res));
-          toast.success(`Success! Found ${res.length} contributors.`);
+          if (res.length > 0) {
+            setDeveloperInfo(handleRes(res));
+            toast.success(`Success! Found ${res.length} contributors.`);
+          }
         })
         .catch((error) => {
           toast.error(error);
