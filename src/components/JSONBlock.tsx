@@ -1,6 +1,8 @@
 import type { DeveloperInfo } from "../App";
 import { toast } from "react-toastify";
 import { Copy } from "lucide-react";
+import { useEffect } from "react";
+import Prism from "prismjs";
 
 export interface JSONBlockProps {
   developerInfo: DeveloperInfo[];
@@ -13,6 +15,10 @@ function JSONBlock({ developerInfo }: JSONBlockProps) {
     await navigator.clipboard.writeText(jsonString);
     toast.success("JSON copied to clipboard");
   };
+
+  useEffect(() => {
+    Prism.highlightAll();
+  }, [developerInfo]);
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
@@ -35,7 +41,7 @@ function JSONBlock({ developerInfo }: JSONBlockProps) {
       >
         {developerInfo.length > 0 ? (
           <pre className="text-sm text-gray-300 whitespace-pre-wrap break-words">
-            <code className="language-json">{jsonString}</code>
+            <code className="lang-js">{jsonString}</code>
           </pre>
         ) : (
           <p className="text-gray-400 h-[30vh] flex items-center justify-center">
