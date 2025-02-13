@@ -13,7 +13,7 @@ function normalizeInputValue(value: string): string {
 }
 
 function mapContributorsToDeveloperInfo(
-  contributors: Record<string, any>[]
+  contributors: DeveloperInfo[]
 ): DeveloperInfo[] {
   return contributors.map((item) => ({
     avatar_url: item.avatar_url,
@@ -28,7 +28,7 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function handleRes(res: Record<string, any>[]): DeveloperInfo[] {
+  function handleRes(res: DeveloperInfo[]): DeveloperInfo[] {
     return mapContributorsToDeveloperInfo(res);
   }
 
@@ -49,7 +49,6 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
         })
         .finally(() => {
           setIsLoading(false);
-          setInputValue("");
         });
     } else {
       toast.error("Please enter a valid repository URL.");
@@ -58,8 +57,9 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="relative">
+      <div className="relative" onMouseEnter={() => setIsFocused(true)} onMouseLeave={() => setIsFocused(false)}>
         <input
+          ref={(input) => input?.focus()}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setIsFocused(true)}

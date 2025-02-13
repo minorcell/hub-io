@@ -40,8 +40,8 @@ function JSONBlock({ developerInfo }: JSONBlockProps) {
         style={{ maxHeight: "calc(50vh - 60px)" }}
       >
         {developerInfo.length > 0 ? (
-          <pre className="text-sm text-gray-300 whitespace-pre-wrap break-words">
-            <code className="lang-js">{jsonString}</code>
+          <pre className="text-sm text-gray-300 whitespace-pre overflow-x-auto break-words">
+            <code className="lang-js select-text">{jsonString}</code>
           </pre>
         ) : (
           <p className="text-gray-400 h-[30vh] flex items-center justify-center">
