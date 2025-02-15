@@ -42,10 +42,8 @@ Example Usage 🖼️
 # My Awesome Project
 
 1.  with image export.
-    <p>
-
-        <img src="replace-with-generated-image" alt="Contributors" width="500" />
-
+<p>
+  <img src="replace-with-generated-image" alt="Contributors" width="500" />
 </p>
 
 2. with Markdown export.
