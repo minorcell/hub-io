@@ -1,43 +1,43 @@
 @import "tailwindcss";
 
 html {
-    overflow: -moz-hidden-unscrollable;
-    /* Firefox */
-    overflow: hidden;
-    height: 100%;
+  overflow: -moz-hidden-unscrollable;
+  /* Firefox */
+  overflow: hidden;
+  height: 100%;
 }
 
 body {
-    height: 100%;
-    overflow: auto;
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
+  height: 100%;
+  overflow: auto;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 *::-webkit-scrollbar {
-    display: none;
-    /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 
 @font-face {
-    font-family: 'SixtyfourConvergence';
-    src: url('./assets/fonts/SixtyfourConvergence-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "SixtyfourConvergence";
+  src: url("./assets/fonts/SixtyfourConvergence-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'IoNormal';
-    src: url('./assets/fonts/normal.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "IoNormal";
+  src: url("./assets/fonts/normal.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme {
-    --font-SixtyfourConvergence: "SixtyfourConvergence";
-    --font-IoNormal: "IoNormal";
+  --font-SixtyfourConvergence: "SixtyfourConvergence";
+  --font-IoNormal: "IoNormal";
 }
