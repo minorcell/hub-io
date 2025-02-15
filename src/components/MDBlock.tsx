@@ -12,16 +12,13 @@ function MDBlock({ developerInfo }: MDBlockProps) {
   const generateMarkdownTable = () => {
     if (developerInfo.length === 0) return "";
 
-    // 每行最多显示 8 个 <td>
     const MAX_COLUMNS = 8;
 
-    // 分组：每 8 个开发者为一组
     const groupedRows = [];
     for (let i = 0; i < developerInfo.length; i += MAX_COLUMNS) {
       groupedRows.push(developerInfo.slice(i, i + MAX_COLUMNS));
     }
 
-    // 生成表格内容
     const rows = groupedRows.map((group) => {
       const cells = group.map((dev) => {
         return `<td align="center" valign="top" width="${
@@ -37,7 +34,6 @@ function MDBlock({ developerInfo }: MDBlockProps) {
       return `    <tr>${cells.join("")}\n    </tr>\n`;
     });
 
-    // 拼接完整的表格
     const header = `<table>\n  <tbody>\n`;
     const footer = `\n  </tbody>\n</table>`;
     return header + rows.join("") + footer;

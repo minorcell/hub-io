@@ -23,7 +23,7 @@ function AppInfo() {
         </div>
         <p className="text-xl sm:text-2xl md:text-3xl text-gray-300 leading-relaxed max-w-3xl mx-auto">
           Effortlessly retrieve GitHub repository information and export it to
-          JSON or Image formats.
+          Markdown, JSON or Image formats.
         </p>
       </div>
     </div>
