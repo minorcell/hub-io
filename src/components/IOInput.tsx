@@ -32,32 +32,58 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
     return mapContributorsToDeveloperInfo(res);
   }
 
+  function validateInput(input: string): boolean {
+    if (!input.trim()) return false;
+
+    const githubRepoPattern = /^(https?:\/\/github\.com\/)?[\w.-]+\/[\w.-]+$/;
+    return githubRepoPattern.test(input);
+  }
+
   function handleSearch(): void {
     setDeveloperInfo([]);
-    if (inputValue) {
-      setIsLoading(true);
-      const normalizedValue = normalizeInputValue(inputValue);
-      getContributors(normalizedValue)
-        .then((res) => {
-          if (res.length > 0) {
-            setDeveloperInfo(handleRes(res));
-            toast.success(`Success! Found ${res.length} contributors.`);
-          }
-        })
-        .catch((error) => {
-          toast.error(error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      toast.error("Please enter a valid repository URL.");
+
+    if (!inputValue) {
+      toast.error("Please enter the repository URL.");
+      return;
     }
+
+    if (!validateInput(inputValue)) {
+      toast.error(
+        "Please enter a valid GitHub repository URL in the format: username/repository or https://github.com/username/repository"
+      );
+      return;
+    }
+
+    setIsLoading(true);
+    const normalizedValue = normalizeInputValue(inputValue);
+
+    getContributors(normalizedValue)
+      .then((res) => {
+        if (res.length > 0) {
+          setDeveloperInfo(handleRes(res));
+          toast.success(`Success! Found ${res.length} contributors.`);
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred during search:", error);
+        toast.error(
+          typeof error === "string"
+            ? error
+            : "An error occurred during the search. Please try again later."
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="relative" onMouseEnter={() => setIsFocused(true)} onMouseLeave={() => setIsFocused(false)}>
+      <div
+        className="relative"
+        onMouseEnter={() => setIsFocused(true)}
+        onMouseLeave={() => setIsFocused(false)}
+      >
         <input
           ref={(input) => input?.focus()}
           value={inputValue}
