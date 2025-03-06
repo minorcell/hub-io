@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 
-// 从环境变量获取GitHub Token
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
 export const getContributors = async (repoName: string) => {
@@ -21,28 +20,32 @@ export const getContributors = async (repoName: string) => {
     );
 
     if (response.status === 404) {
-      toast.error("仓库未找到，请输入正确的URL。");
+      toast.error("Repository not found, please enter the correct URL.");
       return [];
     } else if (response.status === 403) {
       const rateLimitReset = response.headers.get("X-RateLimit-Reset");
       const resetTime = rateLimitReset
         ? new Date(parseInt(rateLimitReset) * 1000).toLocaleTimeString()
-        : "稍后";
-      toast.error(`API请求次数已达上限，请在${resetTime}后重试。`);
+        : "later";
+      toast.error(
+        `The number of API requests has reached the upper limit. Please try again after ${resetTime}.`
+      );
       return [];
     } else if (!response.ok) {
-      toast.error(`请求失败: ${response.status} ${response.statusText}`);
+      toast.error(`Request failed: ${response.status} ${response.statusText}`);
       return [];
     }
 
     const data = await response.json();
     if (data.length === 0) {
-      toast.warning("该仓库没有贡献者信息。");
+      toast.warning("This repository has no contributor information.");
     }
     return data;
   } catch (error) {
-    console.error("获取贡献者信息时出错:", error);
-    toast.error("获取贡献者信息失败，请检查网络连接或稍后重试。");
+    console.error("Error getting contributor information:", error);
+    toast.error(
+      "Failed to obtain contributor information, please check network connection or try again later."
+    );
     return [];
   }
 };
