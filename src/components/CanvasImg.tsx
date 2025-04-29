@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import type { DeveloperInfo } from "../App";
+import type { Contributor } from "../api/devrloper";
 import { toast } from "react-toastify";
 import { Download, AlertCircle } from "lucide-react";
 
 export interface CanvasImgProps {
-  developerInfo: DeveloperInfo[];
+  developerInfo: Contributor[];
 }
 
 function CanvasImg({ developerInfo }: CanvasImgProps) {

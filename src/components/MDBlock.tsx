@@ -1,11 +1,11 @@
-import type { DeveloperInfo } from "../App";
+import type { Contributor } from "../api/devrloper";
 import { toast } from "react-toastify";
 import { Copy } from "lucide-react";
 import { useEffect } from "react";
 import Prism from "prismjs";
 
 export interface MDBlockProps {
-  developerInfo: DeveloperInfo[];
+  developerInfo: Contributor[];
 }
 
 function MDBlock({ developerInfo }: MDBlockProps) {
