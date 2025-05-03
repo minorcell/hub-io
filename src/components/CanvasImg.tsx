@@ -124,39 +124,39 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
-      <div className="p-4 bg-gray-900 border-b border-gray-700 flex justify-between items-center">
-        <h2 className="text-lg font-semibold text-white">
+    <div className="w-full max-w-4xl mx-auto bg-[#151718] border border-[#26282B] rounded-xl shadow-xl overflow-hidden transition-all duration-200 hover:border-[#313438]">
+      <div className="p-4 bg-gradient-to-b from-[#1C1D1F] to-[#151718] border-b border-[#26282B] flex justify-between items-center">
+        <h2 className="text-[15px] font-medium text-[#E1E4E7]">
           {t({ zh: "贡献者图片", en: "Contributors Image" })}
         </h2>
         {imagesLoaded && (
           <button
             onClick={handleExport}
-            className="flex items-center px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+            className="flex items-center px-3 py-1.5 bg-[#2E2F31] text-[#E1E4E7] text-sm font-medium rounded-md hover:bg-[#3A3B3D] transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-[#4A4B4D] focus:ring-offset-1 focus:ring-offset-[#151718] group"
           >
-            <Download size={16} className="mr-2" />
+            <Download size={14} className="mr-2 opacity-70 group-hover:opacity-100 transition-opacity" />
             {t({ zh: "导出图片", en: "Export Image" })}
           </button>
         )}
       </div>
       <div
-        className="relative flex justify-center items-center bg-transparent"
+        className="relative flex justify-center items-center bg-[#151718]"
         style={{ minHeight: "300px" }}
       >
         {developerInfo.length === 0 ? (
-          <p className="text-gray-400 text-center">
+          <p className="text-[#71757A] text-center text-sm">
             {t({ zh: "暂无数据", en: "No data yet" })}
           </p>
         ) : (
           <>
             <canvas
               ref={canvasRef}
-              className="max-w-full h-auto bg-transparent rounded"
+              className="max-w-full h-auto bg-transparent rounded-lg"
             />
             {isLoading && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-800 bg-opacity-75">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#151718] bg-opacity-90 backdrop-blur-sm">
                 <svg
-                  className="animate-spin h-10 w-10 text-blue-500 mb-4"
+                  className="animate-spin h-8 w-8 text-[#A9ACB1] mb-4"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -167,7 +167,7 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
                     cy="12"
                     r="10"
                     stroke="currentColor"
-                    strokeWidth="4"
+                    strokeWidth="3"
                   ></circle>
                   <path
                     className="opacity-75"
@@ -175,7 +175,7 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                <p className="text-gray-300">
+                <p className="text-[#A9ACB1] text-sm">
                   {t({
                     zh: "正在加载贡献者头像...",
                     en: "Loading contributor avatars...",
@@ -184,15 +184,15 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
               </div>
             )}
             {!isLoading && loadingError && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-800 bg-opacity-75 text-red-400">
-                <AlertCircle size={48} className="mb-4" />
-                <p className="text-center mb-2">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#151718] bg-opacity-90 backdrop-blur-sm text-[#F04438]">
+                <AlertCircle size={32} className="mb-4 opacity-80" />
+                <p className="text-center mb-2 text-sm">
                   {t({
                     zh: "加载贡献者头像出错",
                     en: "Error loading contributor avatars",
                   })}
                 </p>
-                <p className="text-sm text-gray-400 text-center">
+                <p className="text-sm text-[#71757A] text-center">
                   {t({
                     zh: "可能是由于网络问题或 API 限制。",
                     en: "It may be due to network problems or API limitations.",
