@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getContributors } from "../api/devrloper";
 import type { DeveloperInfo } from "../App";
 import { toast } from "react-toastify";
 import { Search } from "lucide-react";
+import { useI18n } from "../i18n/I18nContext";
 
 export interface IOInputProps {
   setDeveloperInfo: (developerInfo: DeveloperInfo[]) => void;
@@ -24,9 +25,15 @@ function mapContributorsToDeveloperInfo(
 }
 
 function IOInput({ setDeveloperInfo }: IOInputProps) {
+  const { t } = useI18n();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   function handleRes(res: DeveloperInfo[]): DeveloperInfo[] {
     return mapContributorsToDeveloperInfo(res);
@@ -43,13 +50,16 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
     setDeveloperInfo([]);
 
     if (!inputValue) {
-      toast.error("Please enter the repository URL.");
+      toast.error(t({ zh: "请输入仓库 URL", en: "Please enter the repository URL" }));
       return;
     }
 
     if (!validateInput(inputValue)) {
       toast.error(
-        "Please enter a valid GitHub repository URL in the format: username/repository or https://github.com/username/repository"
+        t({
+          zh: "请输入有效的 GitHub 仓库 URL，格式为：username/repository 或 https://github.com/username/repository",
+          en: "Please enter a valid GitHub repository URL in the format: username/repository or https://github.com/username/repository"
+        })
       );
       return;
     }
@@ -61,7 +71,15 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
       .then((res) => {
         if (res.length > 0) {
           setDeveloperInfo(handleRes(res));
-          toast.success(`Success! Found ${res.length} contributors.`);
+          toast.success(
+            t(
+              {
+                zh: "成功！找到 {{count}} 个贡献者。",
+                en: "Success! Found {{count}} contributors."
+              },
+              { count: res.length }
+            )
+          );
         }
       })
       .catch((error) => {
@@ -69,7 +87,10 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
         toast.error(
           typeof error === "string"
             ? error
-            : "An error occurred during the search. Please try again later."
+            : t({
+                zh: "搜索过程中发生错误，请稍后重试。",
+                en: "An error occurred during the search. Please try again later."
+              })
         );
       })
       .finally(() => {
@@ -85,7 +106,7 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
         onMouseLeave={() => setIsFocused(false)}
       >
         <input
-          ref={(input) => input?.focus()}
+          ref={inputRef}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setIsFocused(true)}
@@ -105,7 +126,7 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
               : "top-4 text-base text-gray-400"
           }`}
         >
-          Repository URL
+          {t({ zh: "仓库 URL", en: "Repository URL" })}
         </label>
         <button
           onClick={handleSearch}
@@ -134,17 +155,17 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              Loading
+              {t({ zh: "加载中", en: "Loading" })}
             </span>
           ) : (
             <span className="flex items-center">
               <Search className="mr-2" size={16} />
-              Query
+              {t({ zh: "查询", en: "Query" })}
             </span>
           )}
         </button>
       </div>
-      <p className="mt-2 text-sm text-gray-400">Example: minorcell/hub-io</p>
+      <p className="mt-2 text-sm text-gray-400">{t({ zh: "示例", en: "Example" })}: minorcell/hub-io</p>
     </div>
   );
 }
