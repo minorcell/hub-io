@@ -1,6 +1,8 @@
 import logo from "../assets/io-logo.png";
+import { useI18n } from "../utils/i18n/I18nContext";
 
 function AppInfo() {
+  const { t } = useI18n();
   return (
     <div className="w-full py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center">
@@ -22,8 +24,10 @@ function AppInfo() {
           </h1>
         </div>
         <p className="text-xl sm:text-2xl md:text-3xl text-gray-300 leading-relaxed max-w-3xl mx-auto">
-          Effortlessly retrieve GitHub repository information and export it to
-          Markdown, JSON or Image formats.
+          {t({
+            zh: "轻松获取 GitHub 仓库信息，并导出为 Markdown、JSON 或图片格式。",
+            en: "Effortlessly retrieve GitHub repository information and export it to Markdown, JSON or Image formats.",
+          })}
         </p>
       </div>
     </div>
