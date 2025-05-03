@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import type { Contributor } from "../api/devrloper";
 import { toast } from "react-toastify";
 import { Download, AlertCircle } from "lucide-react";
+import { useI18n } from "../i18n/I18nContext";
 
 export interface CanvasImgProps {
   developerInfo: Contributor[];
 }
 
 function CanvasImg({ developerInfo }: CanvasImgProps) {
+  const { t } = useI18n();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState<boolean>(false);
@@ -96,7 +98,10 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
         setLoadingError(true);
         setIsLoading(false);
         toast.error(
-          "Unable to load some or all contributor avatars, please try again later"
+          t({
+            zh: "无法加载部分或全部贡献者头像，请稍后重试",
+            en: "Unable to load some or all contributor avatars, please try again later"
+          })
         );
       }
     };
@@ -112,21 +117,21 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
       link.href = dataUrl;
       link.download = "contributors.png";
       link.click();
-      toast.success("Image exported successfully!");
+      toast.success(t({ zh: "图片导出成功！", en: "Image exported successfully!" }));
     }
   };
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
       <div className="p-4 bg-gray-900 border-b border-gray-700 flex justify-between items-center">
-        <h2 className="text-lg font-semibold text-white">Contributors Image</h2>
+        <h2 className="text-lg font-semibold text-white">{t({ zh: "贡献者图片", en: "Contributors Image" })}</h2>
         {imagesLoaded && (
           <button
             onClick={handleExport}
             className="flex items-center px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
           >
             <Download size={16} className="mr-2" />
-            Export Image
+            {t({ zh: "导出图片", en: "Export Image" })}
           </button>
         )}
       </div>
@@ -135,7 +140,7 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
         style={{ minHeight: "300px" }}
       >
         {developerInfo.length === 0 ? (
-          <p className="text-gray-400 text-center">No data yet</p>
+          <p className="text-gray-400 text-center">{t({ zh: "暂无数据", en: "No data yet" })}</p>
         ) : (
           <>
             <canvas
@@ -164,17 +169,17 @@ function CanvasImg({ developerInfo }: CanvasImgProps) {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                <p className="text-gray-300">Loading contributor avatars...</p>
+                <p className="text-gray-300">{t({ zh: "正在加载贡献者头像...", en: "Loading contributor avatars..." })}</p>
               </div>
             )}
             {!isLoading && loadingError && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-800 bg-opacity-75 text-red-400">
                 <AlertCircle size={48} className="mb-4" />
                 <p className="text-center mb-2">
-                  Error loading contributor avatars
+                  {t({ zh: "加载贡献者头像出错", en: "Error loading contributor avatars" })}
                 </p>
                 <p className="text-sm text-gray-400 text-center">
-                  It may be due to network problems or API limitations.
+                  {t({ zh: "可能是由于网络问题或 API 限制。", en: "It may be due to network problems or API limitations." })}
                 </p>
               </div>
             )}
