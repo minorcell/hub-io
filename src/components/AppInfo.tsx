@@ -3,6 +3,7 @@ import { useI18n } from "../utils/i18n/I18nContext";
 
 function AppInfo() {
   const { t } = useI18n();
+  
   return (
     <div className="w-full py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center">

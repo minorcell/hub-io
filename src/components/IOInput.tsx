@@ -27,7 +27,6 @@ function mapContributorsToDeveloperInfo(
 function IOInput({ setDeveloperInfo }: IOInputProps) {
   const { t } = useI18n();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -102,43 +101,30 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div
-        className="relative"
-        onMouseEnter={() => setIsFocused(true)}
-        onMouseLeave={() => setIsFocused(false)}
-      >
+      <div className="relative group">
         <input
           ref={inputRef}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               handleSearch();
             }
           }}
           type="text"
-          className="w-full h-14 pl-4 pr-20 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          placeholder={t({ zh: "仓库 URL", en: "Repository URL" })}
+          className="w-full h-12 px-4 pr-[120px] bg-[#1C1D1F] text-[#E1E4E7] rounded-lg border border-[#26282B] placeholder-[#71757A] focus:outline-none focus:border-[#4A4B4D] focus:ring-1 focus:ring-[#4A4B4D] transition-all duration-200 hover:border-[#313438] text-sm"
         />
-        <label
-          className={`absolute left-4 transition-all duration-200 ${
-            isFocused || inputValue
-              ? "top-0 text-xs text-blue-400"
-              : "top-4 text-base text-gray-400"
-          }`}
-        >
-          {t({ zh: "仓库 URL", en: "Repository URL" })}
-        </label>
         <button
           onClick={handleSearch}
           disabled={!inputValue || isLoading}
-          className="absolute right-2 top-2 h-10 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="absolute right-2 top-2 h-8 px-4 bg-[#2E2F31] text-[#E1E4E7] text-sm font-medium rounded-md hover:bg-[#3A3B3D] focus:outline-none focus:ring-2 focus:ring-[#4A4B4D] focus:ring-offset-1 focus:ring-offset-[#1C1D1F] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group flex items-center space-x-2"
         >
           {isLoading ? (
-            <span className="flex items-center">
+            <span className="flex items-center space-x-2">
               <svg
-                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                className="animate-spin h-3.5 w-3.5 text-[#A9ACB1]"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -149,7 +135,7 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
                   cy="12"
                   r="10"
                   stroke="currentColor"
-                  strokeWidth="4"
+                  strokeWidth="3"
                 ></circle>
                 <path
                   className="opacity-75"
@@ -157,17 +143,20 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              {t({ zh: "加载中", en: "Loading" })}
+              <span>{t({ zh: "加载中", en: "Loading" })}</span>
             </span>
           ) : (
-            <span className="flex items-center">
-              <Search className="mr-2" size={16} />
-              {t({ zh: "查询", en: "Query" })}
+            <span className="flex items-center space-x-2">
+              <Search
+                size={14}
+                className="opacity-70 group-hover:opacity-100 transition-opacity"
+              />
+              <span>{t({ zh: "查询", en: "Query" })}</span>
             </span>
           )}
         </button>
       </div>
-      <p className="mt-2 text-sm text-gray-400">
+      <p className="mt-3 text-sm text-[#71757A]">
         {t({ zh: "示例", en: "Example" })}: minorcell/hub-io
       </p>
     </div>
