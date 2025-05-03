@@ -3,17 +3,12 @@ import { getContributors } from "../api/devrloper";
 import type { DeveloperInfo } from "../App";
 import { toast } from "react-toastify";
 import { Search } from "lucide-react";
-import { useI18n } from "../i18n/I18nContext";
+import { useI18n } from "../utils/i18n/I18nContext";
 
 export interface IOInputProps {
-  setDeveloperInfo: (developerInfo: Contributor[]) => void;
-  loadingState: LoadingState;
-  setLoadingState: (state: LoadingState) => void;
+  setDeveloperInfo: (developerInfo: DeveloperInfo[]) => void;
 }
 
-/**
- * Normalizes GitHub repository URL to owner/repo format
- */
 function normalizeInputValue(value: string): string {
   return value.replace("https://github.com/", "").trim();
 }
@@ -49,18 +44,15 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
 
     const githubRepoPattern = /^(https?:\/\/github\.com\/)?[\w.-]+\/[\w.-]+$/;
     return githubRepoPattern.test(input);
-  }, []);
+  }
 
-  /**
-   * Handles search action with enhanced error handling
-   */
-  const handleSearch = useCallback(async (): Promise<void> => {
-    if (loadingState === "loading") return;
-    
+  function handleSearch(): void {
     setDeveloperInfo([]);
 
     if (!inputValue) {
-      toast.error(t({ zh: "请输入仓库 URL", en: "Please enter the repository URL" }));
+      toast.error(
+        t({ zh: "请输入仓库 URL", en: "Please enter the repository URL" })
+      );
       return;
     }
 
@@ -68,13 +60,13 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
       toast.error(
         t({
           zh: "请输入有效的 GitHub 仓库 URL，格式为：username/repository 或 https://github.com/username/repository",
-          en: "Please enter a valid GitHub repository URL in the format: username/repository or https://github.com/username/repository"
+          en: "Please enter a valid GitHub repository URL in the format: username/repository or https://github.com/username/repository",
         })
       );
       return;
     }
 
-    setLoadingState("loading");
+    setIsLoading(true);
     const normalizedValue = normalizeInputValue(inputValue);
 
     getContributors(normalizedValue)
@@ -85,7 +77,7 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
             t(
               {
                 zh: "成功！找到 {{count}} 个贡献者。",
-                en: "Success! Found {{count}} contributors."
+                en: "Success! Found {{count}} contributors.",
               },
               { count: res.length }
             )
@@ -99,7 +91,7 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
             ? error
             : t({
                 zh: "搜索过程中发生错误，请稍后重试。",
-                en: "An error occurred during the search. Please try again later."
+                en: "An error occurred during the search. Please try again later.",
               })
         );
       })
@@ -111,7 +103,7 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div
-        className="relative mb-4"
+        className="relative"
         onMouseEnter={() => setIsFocused(true)}
         onMouseLeave={() => setIsFocused(false)}
       >
@@ -129,15 +121,6 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
           type="text"
           className="w-full h-14 pl-4 pr-20 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
         />
-        {inputValue && (
-          <button
-            onClick={handleClearInput}
-            className="absolute right-[5.5rem] top-2 h-10 px-2 text-gray-400 hover:text-white focus:outline-none transition duration-200"
-            title="Clear input"
-          >
-            <X size={16} />
-          </button>
-        )}
         <label
           className={`absolute left-4 transition-all duration-200 ${
             isFocused || inputValue
@@ -149,10 +132,10 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
         </label>
         <button
           onClick={handleSearch}
-          disabled={!inputValue || loadingState === "loading"}
+          disabled={!inputValue || isLoading}
           className="absolute right-2 top-2 h-10 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loadingState === "loading" ? (
+          {isLoading ? (
             <span className="flex items-center">
               <svg
                 className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
@@ -184,7 +167,9 @@ function IOInput({ setDeveloperInfo }: IOInputProps) {
           )}
         </button>
       </div>
-      <p className="mt-2 text-sm text-gray-400">{t({ zh: "示例", en: "Example" })}: minorcell/hub-io</p>
+      <p className="mt-2 text-sm text-gray-400">
+        {t({ zh: "示例", en: "Example" })}: minorcell/hub-io
+      </p>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Github, User } from "lucide-react";
-import LanguageSwitch from "../i18n/LanguageSwitch";
-import { useI18n } from "../i18n/I18nContext";
+import LanguageSwitch from "../utils/i18n/LanguageSwitch";
+import { useI18n } from "../utils/i18n/I18nContext";
 
 function Footer() {
   const { t } = useI18n();

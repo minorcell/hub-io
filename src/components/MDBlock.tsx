@@ -1,12 +1,12 @@
-import type { Contributor } from "../api/devrloper";
+import type { DeveloperInfo } from "../App";
 import { toast } from "react-toastify";
 import { Copy } from "lucide-react";
 import { useEffect } from "react";
 import Prism from "prismjs";
-import { useI18n } from "../i18n/I18nContext";
+import { useI18n } from "../utils/i18n/I18nContext";
 
 export interface MDBlockProps {
-  developerInfo: Contributor[];
+  developerInfo: DeveloperInfo[];
 }
 
 function MDBlock({ developerInfo }: MDBlockProps) {
@@ -45,7 +45,9 @@ function MDBlock({ developerInfo }: MDBlockProps) {
 
   const handleCopyMarkdown = async () => {
     await navigator.clipboard.writeText(markdownTable);
-    toast.success(t({ zh: "Markdown 已复制到剪贴板", en: "Markdown copied to clipboard" }));
+    toast.success(
+      t({ zh: "Markdown 已复制到剪贴板", en: "Markdown copied to clipboard" })
+    );
   };
 
   useEffect(() => {
@@ -55,7 +57,9 @@ function MDBlock({ developerInfo }: MDBlockProps) {
   return (
     <div className="w-full max-w-4xl mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
       <div className="p-4 bg-gray-900 border-b border-gray-700 flex justify-between items-center">
-        <h2 className="text-lg font-semibold text-white">{t({ zh: "Markdown 数据", en: "MarkDown Data" })}</h2>
+        <h2 className="text-lg font-semibold text-white">
+          {t({ zh: "Markdown 数据", en: "MarkDown Data" })}
+        </h2>
         {developerInfo.length > 0 && (
           <div className="flex space-x-2">
             <button
