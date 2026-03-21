@@ -1,104 +1,106 @@
-# Hub-IO 🌟
+# Hub-IO
 
-<p align="center"> <img src="./public/io-logo.png" alt="Hub-IO Logo" width="200" /> <div align="center">Hub-IO: Easy access to github repository information</div> </p>
+Hub-IO is a Next.js application for generating stable contributor SVG links for public GitHub repositories.
 
-## Deployment 🖥️
+The flow is simple:
 
-Deployed on [Hub-IO](https://hub-io-mcells-projects.vercel.app/), click to visit!
+1. Enter `owner/repo`
+2. Copy the generated image URL or Markdown snippet
+3. Paste it into a README or docs page
 
-## Introduction 🚀
+The app does not require login, repository installation, pull requests, or a repository-side config file.
 
-Hub-IO is a web application designed to simplify the process of fetching contributor information from GitHub repositories. With Hub-IO, you can automatically retrieve contributor details, including their avatars, and export them as a synthesized image for your README file. Additionally, you can copy the contributor information in JSON format or Markdown for further use. Whether you're managing an open-source project or just curious about your repository's contributors, Hub-IO has got you covered! 🎉
+## How it works
 
-## Features ✨
+- The page builds a deterministic image URL from the repository name and selected options.
+- The render route fetches contributors from the public GitHub API.
+- The SVG response is cached with `Cache-Control`, so Vercel's CDN can serve repeated requests efficiently.
+- The link stays the same while the rendered contributor grid refreshes as cache entries roll over.
 
-Automatic Contributor Fetching: Simply input the GitHub repository URL, and Hub-IO will fetch the contributor information for you. 🕵️‍♂️
+Main render routes:
 
-- Avatar Synthesis: Export contributor avatars as a single synthesized image, perfect for adding to your README file. 🖼️
-
-- JSON Export: Copy contributor information in JSON format for easy integration with other tools or scripts. 📋
-
-- Markdown Export: Copy the contributor information in Markdown format and paste it into README.md for dynamic rendering. 👾
-
-- User-Friendly Interface: Hub-IO is designed with simplicity in mind, making it easy for anyone to use. 🖥️
-
-## How to Use 🛠️
-
-1. Enter Repository URL: Navigate to the Hub-IO website and enter the GitHub repository URL you want to analyze.
-
-2. Fetch Contributors: Click the "Query" button to retrieve the list of contributors.
-
-3. Export Avatars: Choose the "Export Avatars" option to generate a synthesized image of all contributor avatars.
-
-4. Copy JSON: Use the "Copy JSON" button to copy the contributor information in JSON format.
-
-5. Copy Markdown: Use the "Copy Markdonw" button to copy the contributor information in Markdown format.
-
-6. Update README: Download the synthesized image and add it to your README file to showcase your contributors! 📄
-
-Example Usage 🖼️
-
-```markdown
-# My Awesome Project
-
-1.  with image export.
-<p>
-  <img src="replace-with-generated-image" alt="Contributors" width="500" />
-</p>
-
-2. with Markdown export.
-
-<table>
-  <tbody>
-    <tr>
-        <td align="center" valign="top" width="12.5%" style="word-break: break-word; white-space: normal;">
-            <a href="https://github.com/minorcell" title="minorcell">
-                <img src="https://avatars.githubusercontent.com/u/120795714?v=4" width="100px;" alt="minorcell" style="border-radius: 9999px;" />
-            </a>
-        </td>
-    </tr>
-  </tbody>
-</table>
+```text
+/r/:owner/:repo
+/api/render/:owner/:repo
 ```
 
-## Contributing 🤝
+The public-facing route is `/r/:owner/:repo`. The `/api/render` path remains as a compatibility alias.
 
-We welcome contributions from the community! If you'd like to contribute to Hub-IO, please follow these steps:
+## Current capabilities
 
-1. Fork the repository.
+- Public GitHub repositories
+- Transparent SVG avatar grid output
+- Default `12` columns
+- Adjustable between `6` and `24` columns
+- Up to `256` contributors
+- Height adapts to the actual number of contributors shown
+- Optional bot inclusion
+- Markdown snippet generation
 
-2. Create a new branch for your feature or bugfix.
+## Stack
 
-3. Make your changes and commit them.
+- Next.js 16 App Router
+- React 19
+- Tailwind CSS v4
+- shadcn/ui components
+- Vercel Functions for SVG rendering
 
-4. Push your changes to your fork.
+## Local development
 
-5. Submit a pull request to the main repository.
+1. Install dependencies:
 
-Please ensure your code follows our coding standards and includes appropriate tests.
+```bash
+pnpm install
+```
 
-## Contributors 🥰
+2. Copy the example environment file:
 
-<table>
-  <tbody>
-    <tr><td align="center" valign="top" width="12.5%" style="word-break: break-word; white-space: normal;"><a href="https://github.com/minorcell" title="minorcell"><img src="https://avatars.githubusercontent.com/u/120795714?v=4" width="100px;" alt="minorcell" style="border-radius: 9999px;" /></a></td>
-    </tr>
+```bash
+cp .env.example .env.local
+```
 
-  </tbody>
-</table>
+3. Start the app:
 
-## License 📜
+```bash
+pnpm dev
+```
 
-Hub-IO is open-source software licensed under the MIT License. See the LICENSE file for more details.
+## Environment variables
 
-## Acknowledgments 🙏
+See [.env.example](/Users/mcell/Desktop/workspace/hub-io/.env.example).
 
-Thanks to GitHub for providing the API that makes this project possible.
+- `APP_URL`: optional but recommended. Used to generate absolute URLs in the README snippet.
+- `GITHUB_TOKEN`: optional. Recommended in production to avoid GitHub's low anonymous rate limit for public API requests.
 
-Special thanks to all the contributors who have helped make Hub-IO a reality! 🌟
+If `GITHUB_TOKEN` is omitted, the app still works for public repositories, but GitHub API headroom is lower.
 
-## Contact 📧
+## Example snippet
 
-If you have any questions, suggestions, or just want to say hi, feel free to reach out to us at [mCell](mailto:minorcell6789@gmail.com)!.
+```md
+[![Contributors](https://your-app.vercel.app/r/octocat/Hello-World)](https://github.com/octocat/Hello-World/graphs/contributors)
+```
 
-<p align="center"> Made with ❤️ by mCell </p>
+Query parameters are encoded directly into the link when defaults are changed:
+
+```text
+/r/octocat/Hello-World?cols=8&bots=1
+```
+
+## Scripts
+
+- `pnpm dev`
+- `pnpm build`
+- `pnpm start`
+- `pnpm lint`
+
+## Scope
+
+This version currently focuses on public repositories and on-demand rendering.
+
+Intentionally not included:
+
+- GitHub login
+- GitHub App installation
+- writing files into user repositories
+- creating pull requests
+- background jobs or persistent storage
