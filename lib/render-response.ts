@@ -11,6 +11,7 @@ function svgResponse(
   const headers = new Headers(init?.headers);
   headers.set("Content-Type", "image/svg+xml; charset=utf-8");
   headers.set("Cache-Control", init?.cacheControl ?? "no-store");
+  headers.set("X-Robots-Tag", "noindex, nofollow, noimageindex, noarchive");
 
   return new Response(body, {
     ...init,
