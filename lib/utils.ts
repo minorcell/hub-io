@@ -1,3 +1,5 @@
+import { absoluteSiteUrl } from "@/lib/site";
+
 export function parseRepository(input: string): { owner: string; repo: string } {
   const normalized = input
     .trim()
@@ -25,12 +27,5 @@ export function encodePathSegments(...parts: string[]): string {
 }
 
 export function absoluteUrl(pathname: string): string {
-  const trimmed = pathname.startsWith("/") ? pathname : `/${pathname}`;
-  const appUrl = process.env.APP_URL;
-
-  if (!appUrl) {
-    return trimmed;
-  }
-
-  return new URL(trimmed, appUrl).toString();
+  return absoluteSiteUrl(pathname);
 }
