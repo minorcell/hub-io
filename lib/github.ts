@@ -89,8 +89,10 @@ export async function getContributors(
   options: {
     includeBots: boolean;
     limit: number;
+    exclude: string[];
   }
 ): Promise<GitHubContributor[]> {
+  const excludeSet = new Set(options.exclude.map((s) => s.toLowerCase()));
   const contributors: GitHubContributor[] = [];
   let page = 1;
 
@@ -105,6 +107,10 @@ export async function getContributors(
 
     for (const contributor of next) {
       if (!options.includeBots && isBot(contributor)) {
+        continue;
+      }
+
+      if (excludeSet.has(contributor.login.toLowerCase())) {
         continue;
       }
 

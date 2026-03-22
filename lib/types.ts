@@ -3,6 +3,7 @@ export interface RenderOptions {
   avatarSize: number;
   maxCount: number;
   includeBots: boolean;
+  exclude: string[];
 }
 
 export interface GitHubRepo {

@@ -31,6 +31,7 @@ export async function renderContributorAsset(params: {
     const contributors = await getContributors(params.owner, params.repo, {
       includeBots: options.includeBots,
       limit: options.maxCount,
+      exclude: options.exclude,
     });
 
     const svg = await renderContributorCardSvg({
@@ -41,7 +42,7 @@ export async function renderContributorAsset(params: {
     });
 
     return svgResponse(svg, {
-      cacheControl: "public, max-age=0, s-maxage=21600, stale-while-revalidate=86400",
+      cacheControl: "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800",
     });
   } catch (error) {
     if (error instanceof GitHubRequestError) {

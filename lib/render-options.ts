@@ -6,6 +6,7 @@ export const DEFAULT_RENDER_OPTIONS: RenderOptions = {
   avatarSize: 72,
   maxCount: 256,
   includeBots: false,
+  exclude: [],
 };
 
 function clamp(value: number, min: number, max: number): number {
@@ -31,6 +32,14 @@ function parseInteger(
   return clamp(parsed, min, max);
 }
 
+function parseExclude(value: string | null): string[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+}
+
 export function normalizeRenderOptions(
   overrides: Partial<RenderOptions> = {}
 ): RenderOptions {
@@ -51,6 +60,7 @@ export function normalizeRenderOptions(
       256
     ),
     includeBots: overrides.includeBots ?? DEFAULT_RENDER_OPTIONS.includeBots,
+    exclude: overrides.exclude ?? DEFAULT_RENDER_OPTIONS.exclude,
   };
 }
 
@@ -62,9 +72,22 @@ export function parseRenderOptions(searchParams: URLSearchParams): RenderOptions
       6,
       24
     ),
+    avatarSize: parseInteger(
+      searchParams.get("size"),
+      DEFAULT_RENDER_OPTIONS.avatarSize,
+      48,
+      88
+    ),
+    maxCount: parseInteger(
+      searchParams.get("max"),
+      DEFAULT_RENDER_OPTIONS.maxCount,
+      1,
+      256
+    ),
     includeBots:
       searchParams.get("bots") === "1" ||
       searchParams.get("bots") === "true",
+    exclude: parseExclude(searchParams.get("exclude")),
   });
 }
 
@@ -75,8 +98,20 @@ function buildQueryString(options: RenderOptions): string {
     params.set("cols", String(options.columns));
   }
 
+  if (options.avatarSize !== DEFAULT_RENDER_OPTIONS.avatarSize) {
+    params.set("size", String(options.avatarSize));
+  }
+
+  if (options.maxCount !== DEFAULT_RENDER_OPTIONS.maxCount) {
+    params.set("max", String(options.maxCount));
+  }
+
   if (options.includeBots) {
     params.set("bots", "1");
+  }
+
+  if (options.exclude.length > 0) {
+    params.set("exclude", options.exclude.join(","));
   }
 
   return params.toString();
