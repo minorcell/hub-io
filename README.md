@@ -77,7 +77,7 @@ If `GITHUB_TOKEN` is omitted, the app still works for public repositories, but G
 ## Example snippet
 
 ```md
-[![Contributors](https://your-app.vercel.app/r/octocat/Hello-World)](https://github.com/octocat/Hello-World/graphs/contributors)
+[![Contributors](https://hub-io-mcells-projects.vercel.app/r/octocat/Hello-World)](https://github.com/octocat/Hello-World/graphs/contributors)
 ```
 
 Query parameters are encoded directly into the link when defaults are changed:
